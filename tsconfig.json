@@ -1,0 +1,39 @@
+{
+  "compilerOptions": {
+    "allowSyntheticDefaultImports": true,
+    "declaration": false,
+    "emitDecoratorMetadata": true,
+    "experimentalDecorators": true,
+    "noImplicitAny": false,
+    "removeComments": true,
+    "lib": [
+      "dom",
+      "es2015"
+    ],
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "sourceMap": true,
+    "noUnusedLocals": true,
+    "target": "es5",
+    "baseUrl": "src",
+    "rootDir": ".",
+    "typeRoots": [
+      "node_modules/@types"
+    ],
+    "outDir": "dist/",
+  },
+  "include": [
+    "src/**/*.ts"
+  ],
+  "exclude": [
+    "node_modules",
+    "src/**/*.spec.ts",
+    "src/**/__tests__/*.ts",
+    "test-api",
+    "test-config"
+  ],
+  "compileOnSave": false,
+  // "files": [
+  //   "src/*"
+  // ]
+}

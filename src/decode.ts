@@ -1,27 +1,10 @@
+import { Utils } from "@utils/utils";
+
 const BASE_STRING = '';
 const POSITION_POWER = 10;
 const POSITION_FAN = 15;
 const POSITION_MODE = 20;
 const POSITION_SWING = 25;
-
-String.prototype.replaceAt = function (index, replacement)
-{
-  return this.substr(0, index) + replacement + this.substr(index + replacement.length);
-};
-
-String.prototype.reverse = function ()
-{
-  let newString = "";
-  for (var i = this.length - 1; i >= 0; --i) {
-      newString += this[i];
-  }
-  return newString;
-};
-
-String.prototype.chunk = function (piece)
-{
-  return this.match(new RegExp('.{1,' + piece + '}', 'g'));
-};
 
 const validateData = function (data) {
   if (!data.hasOwnProperty('power')) {
@@ -49,10 +32,10 @@ const produceBinaryString = function (data) {
 
   let binaryString = BASE_STRING;
 
-  binaryString = binaryString.replaceAt(POSITION_POWER, data.power);
-  binaryString = binaryString.replaceAt(POSITION_FAN, data.fan);
-  binaryString = binaryString.replaceAt(POSITION_MODE, data.mode);
-  binaryString = binaryString.replaceAt(POSITION_SWING data.swing);
+  binaryString = Utils.replaceAt(POSITION_POWER, data.power, binaryString);
+  binaryString = Utils.replaceAt(POSITION_FAN, data.fan, binaryString);
+  binaryString = Utils.replaceAt(POSITION_MODE, data.mode, binaryString);
+  binaryString = Utils.replaceAt(POSITION_SWING, data.swing, binaryString);
 
   binaryString += checksum(binaryString);
 
@@ -61,14 +44,14 @@ const produceBinaryString = function (data) {
 
 const checksum = function (binaryString)
 {
-  const bytes = binaryString.chunk(8);
+  const bytes = Utils.chunk(binaryString, 8);
 
   let sum = '00000000';
   for (let byte of bytes) {
-    sum = addBinary(sum, byte.reverse());
+    sum = addBinary(sum, Utils.reverse(byte));
   }
 
-  return sum.reverse();
+  return Utils.reverse(sum);
 };
 
 const bitToRawCouple = function (bit)
@@ -76,10 +59,11 @@ const bitToRawCouple = function (bit)
 
 };
 
-const encode = function (binaryString)
+const decode = function (binaryString)
 {
+  binaryString = Utils.chunk(binaryString, 1);
+
   binaryString
-    .chunk(1)
     .forEach(
       function(elem, index) {
         bitToRawCouple(elem);
