@@ -3,13 +3,15 @@
   "version": "0.0.1",
   "author": "SteelMan <Concetto Pollicina>",
   "scripts": {
-    "ts-node": "ts-node"
+    "ts-node": "ts-node",
+    "encode": "ts-node ./src/encode",
+    "decode": "ts-node ./src/decode"
   },
   "dependencies": {
-    "@types/node": "^7.0.5"
+    "@types/node": "7.0.5"
   },
   "devDependencies": {
-    "ts-node": "^6.1.1",
-    "typescript": "^2.9.2"
+    "ts-node": "6.1.1",
+    "typescript": "2.9.2"
   }
 }

@@ -24,11 +24,10 @@ export class Utils
     return newString;
   }
 
-  static chunk(string: string, pieces: number): string
+  static chunk(string: string, pieces: number): string[]
   {
     return string
-      .match(new RegExp('.{1,' + pieces + '}', 'g'))
-      .toString();
+      .match(new RegExp('.{1,' + pieces + '}', 'g'));
   }
 
   static compare(n1: number, n2: number, margin: number): boolean

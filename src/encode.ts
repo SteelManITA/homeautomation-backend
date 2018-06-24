@@ -1,10 +1,15 @@
+/**
+ * Dato un insieme di files con i valori raw
+ * ritorna un insieme di files con i valori binari
+ */
+
 import { Constants } from './constants';
 import { Utils } from './utils/utils';
-import * as fs from "fs";
+import * as fs from 'fs';
 
 export class Encode
 {
-  private readonly MARGIN = 150;
+  private readonly MARGIN: number = 150;
 
   private compare(n1: number, n2: number): boolean
   {
@@ -13,16 +18,28 @@ export class Encode
 
   private rawCoupleToBit(on: number, off: number): string
   {
-    if (this.compare(on, Constants.VALUES.INTRO) && this.compare(off, Constants.VALUES.INTRO2)) {
+    if (
+      this.compare(on, Constants.SIGNAL_VALUES.INTRO)
+      && this.compare(off, Constants.SIGNAL_VALUES.INTRO2)
+    ) {
       return '';
     }
-    if (this.compare(on, Constants.VALUES.SHORT) && this.compare(off, Constants.VALUES.SHORT)) {
+    if (
+      this.compare(on, Constants.SIGNAL_VALUES.SHORT)
+      && this.compare(off, Constants.SIGNAL_VALUES.SHORT)
+    ) {
       return '0';
     }
-    if (this.compare(on, Constants.VALUES.SHORT) && this.compare(off, Constants.VALUES.LONG)) {
+    if (
+      this.compare(on, Constants.SIGNAL_VALUES.SHORT)
+      && this.compare(off, Constants.SIGNAL_VALUES.LONG)
+    ) {
       return '1';
     }
-    if (this.compare(on, Constants.VALUES.SHORT) && this.compare(off, Constants.VALUES.SEPARATOR)) {
+    if (
+      this.compare(on, Constants.SIGNAL_VALUES.SHORT)
+      && this.compare(off, Constants.SIGNAL_VALUES.SEPARATOR)
+    ) {
       return ':';
     }
     throw 'Error: Out of range ('+ on + ', ' + off +')';
@@ -30,10 +47,10 @@ export class Encode
 
   private encode(rawData: string[]): string
   {
-    let s = '';
-    for (let i = 1; i < rawData.length; i+=2) {
-      const on = parseInt(rawData[i-1]);
-      const off = parseInt(rawData[i]);
+    let s: string = '';
+    for (let i: number = 1; i < rawData.length; i+=2) {
+      const on: number = parseInt(rawData[i-1]);
+      const off: number = parseInt(rawData[i]);
       s += this.rawCoupleToBit(on, off);
     }
     return s;
@@ -41,13 +58,13 @@ export class Encode
 
   private encodeFile(fileName: string): void
   {
-    const fileIn = Constants.FOLDER.ORIGINAL_VALUES + '/' + fileName;
-    const fileOut = Constants.FOLDER.BINARY_VALUES + '/' + fileName;
+    const fileIn: string = Constants.FOLDER.ORIGINAL_VALUES + '/' + fileName;
+    const fileOut: string = Constants.FOLDER.BINARY_VALUES + '/' + fileName;
 
     fs.readFile(fileIn, Constants.FILE_ENCODING, (err, fileData) => {
       if (err) throw err;
 
-      const rawData = fileData
+      const rawData: string[] = fileData
         .match(/[0-9]+/g) // cerca tutti i valori numerici e li mette in un array
         .splice(1); // elimina il primo valore
 
@@ -56,7 +73,9 @@ export class Encode
       fs.writeFile(
         fileOut,
         encodedString,
-        Constants.FILE_ENCODING,
+        {
+          encoding: Constants.FILE_ENCODING
+        },
         (err) => { if (err) throw err; }
       );
     });
