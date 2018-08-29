@@ -5,7 +5,7 @@ export type BinaryString = ByteString;
 
 export class Binary
 {
-  private byteString: BinaryString;
+  private byteString: BinaryString = '';
 
   private validateByteString(byteString: BinaryString): void
   {
@@ -14,10 +14,13 @@ export class Binary
     }
   }
 
-  constructor (byteString: BinaryString = undefined) {
+  constructor (byteString: BinaryString = undefined, length: number = 0) {
     if (Utils.isDefined(byteString)) {
       this.validateByteString(byteString);
       this.byteString = byteString;
+    }
+    if (length > 0) {
+      this.byteString = Binary.addLeadingZeros(this.byteString, length);
     }
   }
 
@@ -92,16 +95,20 @@ export class Binary
 
   checksum(): BinaryString
   {
+    if (this.byteString === '') {
+      return '';
+    }
+
     const bytes = Utils.chunk(this.byteString, 8);
 
     const checksum = bytes.reduce(
-      (prev, curr) => {
-        return Binary.add(prev, Utils.reverse(curr))
+      (sum, curr) => {
+        return Binary.add(sum, Utils.reverse(curr))
       },
       '00000000'
     );
 
-    return Utils.reverse(checksum);
+    return Utils.reverse(checksum.substr(checksum.length-8));
   }
 
   static xor(a, b): number

@@ -1,17 +1,28 @@
 {
   "name": "homeautomationairconditioner",
+  "description": "Your house in a tap",
   "version": "0.0.1",
   "author": "SteelMan <Concetto Pollicina>",
   "scripts": {
     "ts-node": "ts-node",
     "encode": "ts-node ./src/encode",
-    "decode": "ts-node ./src/decode"
+    "decode": "ts-node ./src/decode",
   },
   "dependencies": {
-    "@types/node": "7.0.5"
+    "@types/node": "7.0.5",
+    "pigpio": "1.1.2"
   },
   "devDependencies": {
     "ts-node": "6.1.1",
-    "typescript": "2.9.2"
+    "typescript": "2.9.2",
+    "@types/pigpio": "0.4.2",
+    "@types/raspi-board": "5.2.0",
+    "@types/raspi-peripheral": "2.0.0",
+  },
+  "optionalDependencies": {
+    "raspi": "5.0.2",
+    "raspi-gpio": "6.0.0",
+    "raspi-board": "5.3.1",
+    "raspi-peripheral": "2.0.1"
   }
 }

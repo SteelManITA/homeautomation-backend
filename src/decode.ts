@@ -1,122 +1,64 @@
-import { Utils } from "@utils/utils";
+/**
+ * Data una stringa binaria
+ * restituisce una raw string
+ */
 
-const BASE_STRING = '';
-const POSITION_POWER = 10;
-const POSITION_FAN = 15;
-const POSITION_MODE = 20;
-const POSITION_SWING = 25;
+import { Constants } from './constants';
+import { BinaryString } from './utils/binary';
+import { Utils } from "./utils/utils";
 
-const validateData = function (data) {
-  if (!data.hasOwnProperty('power')) {
-    data.power = true;
-  }
-  if (!data.hasOwnProperty('temperature')) {
-    data.temperature = 20;
-  }
-  if (!data.hasOwnProperty('fan')) {
-    data.fan = 'auto';
-  }
-  if (!data.hasOwnProperty('mode')) {
-    data.mode = 'auto';
-  }
-  if (!data.hasOwnProperty('swing')) {
-    data.swing = 'auto';
-  }
-  // if (!data.hasOwnProperty('mildDry')) {
-  //   data.mildDry = false;
-  // }
-};
-
-const produceBinaryString = function (data) {
-  // data = validateData(data);
-
-  let binaryString = BASE_STRING;
-
-  binaryString = Utils.replaceAt(POSITION_POWER, data.power, binaryString);
-  binaryString = Utils.replaceAt(POSITION_FAN, data.fan, binaryString);
-  binaryString = Utils.replaceAt(POSITION_MODE, data.mode, binaryString);
-  binaryString = Utils.replaceAt(POSITION_SWING, data.swing, binaryString);
-
-  binaryString += checksum(binaryString);
-
-  return binaryString;
-};
-
-const checksum = function (binaryString)
+export class Decode
 {
-  const bytes = Utils.chunk(binaryString, 8);
+  private arr: any[] = [];
 
-  let sum = '00000000';
-  for (let byte of bytes) {
-    sum = addBinary(sum, Utils.reverse(byte));
+  binaryToRaw(binaryString: BinaryString): string
+  {
+    const binaryStrings: BinaryString[] = Utils.chunk(binaryString, 1);
+    let raw: string = '';
+
+    binaryStrings
+      .forEach((bit: '0' | '1') => {
+        this.arr.push({text: 1, time: Constants.SIGNAL_VALUES.SHORT.toString()});
+
+        if (bit === '0') {
+          this.arr.push({text: 0, time: Constants.SIGNAL_VALUES.SHORT.toString()});
+
+          raw += Constants.SIGNAL_VALUES.SHORT.toString() + " "
+            + Constants.SIGNAL_VALUES.SHORT.toString() + " ";
+        } else if (bit === '1') {
+          this.arr.push({text: 0, time: Constants.SIGNAL_VALUES.LONG.toString()});
+
+          raw += Constants.SIGNAL_VALUES.SHORT.toString() + " "
+            + Constants.SIGNAL_VALUES.LONG.toString() + " ";
+        }
+      });
+
+    return raw;
   }
 
-  return Utils.reverse(sum);
-};
+  decode(binaryString: BinaryString): string
+  {
+    /**
+     * Scorre la stringa binaria
+     * scompone lo 0 in SHORT SHORT e l'1 in SHORT LONG
+     *
+     * La risposta inizia sempre per INTRO INTRO2
+     * i : diventano SHORT SEPARATOR
+     */
 
-const bitToRawCouple = function (bit)
-{
+    const bs: BinaryString[] = binaryString.split(':');
 
-};
+    const header: BinaryString = bs[0];
+    const payload: BinaryString = bs[1];
 
-const decode = function (binaryString)
-{
-  binaryString = Utils.chunk(binaryString, 1);
-
-  binaryString
-    .forEach(
-      function(elem, index) {
-        bitToRawCouple(elem);
-      }
-    );
-};
-
-
-
-
-
-
-
-
-
-// LIB
-
-function addBinary(a, b){
-
-  let sum = '';
-  let carry = '';
-
-  for(var i = a.length-1;i>=0; i--){
-    if(i == a.length-1){
-      //half add the first pair
-      const halfAdd1 = halfAdder(a[i],b[i]);
-      sum = halfAdd1[0]+sum;
-      carry = halfAdd1[1];
-    }else{
-      //full add the rest
-      const fullAdd = fullAdder(a[i],b[i],carry);
-      sum = fullAdd[0]+sum;
-      carry = fullAdd[1];
-    }
+    return Constants.SIGNAL_VALUES.INTRO.toString() + " "
+      + Constants.SIGNAL_VALUES.INTRO2.toString() + " "
+      + this.binaryToRaw(header)
+      + Constants.SIGNAL_VALUES.SHORT.toString() + " "
+      + Constants.SIGNAL_VALUES.SEPARATOR.toString() + " "
+      + Constants.SIGNAL_VALUES.INTRO.toString() + " "
+      + Constants.SIGNAL_VALUES.INTRO2.toString() + " "
+      + this.binaryToRaw(payload)
+      + Constants.SIGNAL_VALUES.SHORT;
   }
-
-  return carry ? carry + sum : sum;
-}
-
-function xor(a, b){return (a === b ? 0 : 1);}
-function and(a, b){return a == 1 && b == 1 ? 1 : 0;}
-function or(a, b){return (a || b);}
-
-function fullAdder(a, b, carry){
-  halfAdd = halfAdder(a,b);
-  const sum = xor(carry, halfAdd[0]);
-  carry = and(carry, halfAdd[0]);
-  carry = or(carry, halfAdd[1]);
-  return [sum, carry];
-}
-
-function halfAdder(a, b){
-  const sum = xor(a,b);
-  const carry = and(a,b);
-  return [sum, carry];
 }

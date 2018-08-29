@@ -10,6 +10,7 @@ interface SignalValuesAttr {
 
 interface RemoteValuesAttr {
   HEADER: BinaryString,
+  BASE: BinaryString,
   FAN_SPEED: {
     LOWEST: BinaryString;
     LOW: BinaryString;
@@ -37,6 +38,8 @@ interface RemoteValuesAttr {
     OFF: BinaryString;
   };
   TEMPERATURE: {
+    16: BinaryString,
+    17: BinaryString,
     18: BinaryString,
     19: BinaryString,
     20: BinaryString,
@@ -72,6 +75,7 @@ interface ConstantsAttr
   SIGNAL_VALUES: SignalValuesAttr;
   REMOTE_VALUES: RemoteValuesAttr;
   REMOTE_POSITIONS: RemotePositionsAttr;
+  OUT_PIN: string;
 }
 
 const SignalValues: SignalValuesAttr = {
@@ -83,57 +87,61 @@ const SignalValues: SignalValuesAttr = {
 }
 
 const RemoteValues: RemoteValuesAttr = {
-  HEADER: '',
+  HEADER: '0100000000000100000001110010000000000000000000000000000001100000',
+  BASE: '01000000000001000000011100100000000000000000000000000100000000010000000010110000000000000111000000000111000000000000000010000001000000000000000000000000',
   FAN_SPEED: {
-    LOWEST: '',
-    LOW: '',
-    MEDIUM: '',
-    HIGH: '',
-    HIGHEST: '',
-    AUTO: '',
+    LOWEST: '1100',
+    LOW: '0010',
+    MEDIUM: '1010',
+    HIGH: '0110',
+    HIGHEST: '1110',
+    AUTO: '0101',
   },
   SWING: {
-    LOWEST: '',
-    LOW: '',
-    MEDIUM: '',
-    HIGH: '',
-    HIGHEST: '',
-    AUTO: '',
+    // TODO: Controllare se sono scritti correttamente o invertiti (lowest <-> highest & low <-> high)
+    LOWEST: '1000',
+    LOW: '0100',
+    MEDIUM: '1100',
+    HIGH: '0010',
+    HIGHEST: '1010',
+    AUTO: '1111',
   },
   MODE: {
-    COOL: '',
-    HEAT: '',
-    DRY: '',
-    AUTO: '',
+    COOL: '1110',
+    HEAT: '1001',
+    DRY: '1010',
+    AUTO: '1000',
   },
   STATE: {
-    ON: '',
-    OFF: '',
+    ON: '1',
+    OFF: '0',
   },
   TEMPERATURE: {
-    18: '',
-    19: '',
-    20: '',
-    21: '',
-    22: '',
-    23: '',
-    24: '',
-    25: '',
-    26: '',
-    27: '',
-    28: '',
-    29: '',
-    30: '',
+    16: '0000',
+    17: '1000',
+    18: '0100',
+    19: '1100',
+    20: '0010',
+    21: '1010',
+    22: '0110',
+    23: '1110',
+    24: '0001',
+    25: '1001',
+    26: '0101',
+    27: '1101',
+    28: '0011',
+    29: '1011',
+    30: '0111',
   }
 };
 
 const RemotePositions: RemotePositionsAttr = {
-  STATE: 0,
-  MODE: 0,
-  FAN_SPEED: 0,
-  SWING: 0,
-  TEMPERATURE: 0,
-  CHECKSUM: 0,
+  STATE: 40,
+  MODE: 43,
+  FAN_SPEED: 68,
+  SWING: 64,
+  TEMPERATURE: 49,
+  CHECKSUM: 144,
 }
 
 export const Constants: ConstantsAttr = {
@@ -145,4 +153,5 @@ export const Constants: ConstantsAttr = {
   SIGNAL_VALUES: SignalValues,
   REMOTE_VALUES: RemoteValues,
   REMOTE_POSITIONS: RemotePositions,
+  OUT_PIN: 'GPIO17',
 };
