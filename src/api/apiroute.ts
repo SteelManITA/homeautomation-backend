@@ -5,7 +5,7 @@ export interface ApiResponse
   error;
   code;
   message;
-  result;
+  results;
 }
 
 export class BaseApiRoute
@@ -22,7 +22,7 @@ export class BaseApiRoute
       error: error,
       code: statusCode,
       message: message,
-      result: data
+      results: data,
     };
 
     res.statusCode = statusCode;
