@@ -1,33 +1,36 @@
-import { IRSlinger } from './../services/irslinger';
-import { Decode } from './../decode';
+import { AirConditionerArgs } from './../airconditioner';
+import { DevicesService, Device } from './../services/devices.service';
 import { Request, Response, Router } from "express";
 import { BaseApiRoute } from "./apiroute";
-import { AirConditioner, AirConditionerArgs } from './../airconditioner';
 
 export class AirConditionerRoute
-extends BaseApiRoute
+  extends BaseApiRoute
 {
-
   public static create(router: Router) {
-    console.log("[IndexApiRoute::create] Creating index api route.");
+    const devicesService: DevicesService = DevicesService.getInstance();
 
-    router.get('/', (req: Request, res: Response) => {
-      const args: AirConditionerArgs = req.query;
+    router.get('/devices', (req: Request, res: Response) => {
+      new AirConditionerRoute().response(res, devicesService.getAll());
+    });
 
-      let bin: string;
+    router.get('/devices/:id', (req: Request, res: Response) => {
+      if (!req.params.hasOwnProperty('id')) {
+        new AirConditionerRoute().response(res, '', 400, 'Missing parameter: id');
+      }
+      new AirConditionerRoute().response(res, devicesService.get(Number(req.params.id)));
+    });
 
-      try {
-        bin = new AirConditioner().toBin(args);
-      } catch (e) {
-        new AirConditionerRoute().response(res, '', 405, e);
+    router.post('/devices/:id', (req: Request, res: Response) => {
+      if (!req.params.hasOwnProperty('id')) {
+        new AirConditionerRoute().response(res, '', 400, 'Missing parameter: id');
       }
 
-      new IRSlinger().sling({
-        program: "./irslinger",
-        code: '' + new Decode().decode(bin) + ''
-      });
-
-      new AirConditionerRoute().response(res, 'ci siamo', 200, 'OK');
+      try {
+        const device: Device = devicesService.send(Number(req.params.id), (req.body as AirConditionerArgs));
+        new AirConditionerRoute().response(res, device, 200, 'OK');
+      } catch (e) {
+        new AirConditionerRoute().response(res, '', 405, e.message);
+      }
     });
   }
 
