@@ -1,4 +1,4 @@
-import { AirConditionerRoute } from './api/airconditioner';
+import { DevicesRoute } from './api/devices';
 import * as bodyParser from "body-parser";
 // import * as cookieParser from "cookie-parser";
 import * as express from "express";
@@ -29,7 +29,7 @@ export class Server
     router = express.Router();
 
     // Routes
-    AirConditionerRoute.create(router);
+    DevicesRoute.create(router);
 
     this.app.use('/api', router);
   }
