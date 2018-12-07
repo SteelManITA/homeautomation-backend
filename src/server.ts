@@ -7,6 +7,7 @@ import * as path from "path";
 import errorHandler = require("errorhandler");
 // import methodOverride = require("method-override");
 import { IndexRoute } from "./routes/index";
+import * as cors from "cors";
 
 export class Server
 {
@@ -27,6 +28,9 @@ export class Server
   public api() {
     let router: express.Router;
     router = express.Router();
+
+    // use cors middleware
+    router.use(cors());
 
     // Routes
     DevicesRoute.create(router);
