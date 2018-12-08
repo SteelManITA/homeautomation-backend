@@ -7,7 +7,8 @@
     "ts-node": "ts-node",
     "encode": "ts-node ./src/encode",
     "decode": "ts-node ./src/decode",
-    "start": "gulp & node ./bin/www"
+    "start": "npm run gulp && node ./bin/www",
+    "gulp": "gulp"
   },
   "dependencies": {
     "cors": "2.8.5",
