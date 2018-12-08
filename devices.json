@@ -1,17 +1,19 @@
 [
 	{
 		"id": 1,
-		"name": "Air conditioner living room",
+		"name": "Air conditioner 1",
+		"room": "living-room",
 		"type": "air-conditioner",
-		"state": "off",
-		"mode": "cool",
-		"fanSpeed": "lowest",
+		"state": "on",
+		"mode": "dry",
+		"fanSpeed": "medium",
 		"swing": "lowest",
-		"temperature": 22
+		"temperature": 23
 	},
 	{
 		"id": 2,
-		"name": "Air conditioner bedroom",
+		"name": "Air conditioner 2",
+		"room": "living-room",
 		"type": "air-conditioner",
 		"state": "on",
 		"mode": "cool",

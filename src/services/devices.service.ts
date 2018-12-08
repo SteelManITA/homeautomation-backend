@@ -9,6 +9,7 @@ export interface Device
   id: number;
   name: string;
   type: 'air-conditioner';
+  room: string;
 }
 
 export interface AirConditionerDevice
@@ -21,11 +22,20 @@ export interface AirConditionerDevice
   temperature: 16 | 17 | 18 | 19 | 20 | 21 | 22 | 23 | 24 | 25 | 26 | 27 | 28 | 29 | 30;
 }
 
+export interface Room
+{
+  name: string,
+  label: string,
+  devices: Device[],
+}
+
 export class DevicesService
 {
   private static instance: DevicesService = null;
 
   private devices: Device[];
+  // private rooms: Room[];
+  private rooms: Room[];
 
   private constructor (
   ) {
@@ -34,6 +44,23 @@ export class DevicesService
   private load(): void
   {
     this.devices = loadJsonFile('devices.json');
+    const rooms: {[key: string]: Room} = {};
+
+    for (const device of this.devices) {
+      if (rooms.hasOwnProperty(device.room)) {
+        (rooms[device.room] as Room).devices.push(device);
+      } else {
+        rooms[device.room] = <Room>{
+          name: device.room,
+          label: device.room,
+          devices: [device],
+        };
+      }
+    }
+
+    this.rooms = Object.keys(rooms).map(function (key) {
+        return rooms[key];
+    });
   }
 
   private save(data: Device | Device[]): void
@@ -106,5 +133,10 @@ export class DevicesService
 
     this.save(device);
     return device;
+  }
+
+  public getRooms(): Room[]
+  {
+    return this.rooms;
   }
 }

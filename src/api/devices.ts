@@ -32,6 +32,10 @@ export class DevicesRoute
         new DevicesRoute().response(res, '', 405, e.message);
       }
     });
+
+    router.get('/rooms', (req: Request, res: Response) => {
+      new DevicesRoute().response(res, devicesService.getRooms());
+    });
   }
 
 }
