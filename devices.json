@@ -2,7 +2,7 @@
 	{
 		"id": 1,
 		"name": "Air conditioner 1",
-		"room": "living-room",
+		"room": "bedroom",
 		"type": "air-conditioner",
 		"state": "on",
 		"mode": "dry",

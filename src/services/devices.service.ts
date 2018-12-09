@@ -25,7 +25,6 @@ export interface AirConditionerDevice
 export interface Room
 {
   name: string,
-  label: string,
   devices: Device[],
 }
 
@@ -52,7 +51,6 @@ export class DevicesService
       } else {
         rooms[device.room] = <Room>{
           name: device.room,
-          label: device.room,
           devices: [device],
         };
       }
