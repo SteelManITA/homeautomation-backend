@@ -98,12 +98,11 @@ const RemoteValues: RemoteValuesAttr = {
     AUTO: '0101',
   },
   SWING: {
-    // TODO: Controllare se sono scritti correttamente o invertiti (lowest <-> highest & low <-> high)
-    LOWEST: '1000',
-    LOW: '0100',
+    LOWEST: '1010',
+    LOW: '0010',
     MEDIUM: '1100',
-    HIGH: '0010',
-    HIGHEST: '1010',
+    HIGH: '0100',
+    HIGHEST: '1000',
     AUTO: '1111',
   },
   MODE: {
