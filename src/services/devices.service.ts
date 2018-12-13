@@ -1,4 +1,4 @@
-import { Device, Room, AirConditionerDevice } from './../models/models';
+import { Device, Room, AirConditionerDevice, LightDevice } from './../models/models';
 import { Decode } from './../decode';
 import { IRSlinger } from './irslinger.service';
 import { AirConditionerArgs, AirConditioner } from './../airconditioner';
@@ -98,6 +98,12 @@ export class DevicesService
         } catch (e) {
           throw new Error('Bad parameters');
         }
+        break;
+      }
+      case 'light': {
+        const lDevice = device as LightDevice;
+
+        lDevice.state = data.state ? data.state : lDevice.state;
         break;
       }
       default: {

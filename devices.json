@@ -20,5 +20,12 @@
 		"fanSpeed": "lowest",
 		"swing": "lowest",
 		"temperature": 25
+	},
+	{
+		"id": 3,
+		"name": "lampadina",
+		"room": "bedroom",
+		"type": "light",
+		"state": "on"
 	}
 ]
