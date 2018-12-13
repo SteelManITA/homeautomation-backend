@@ -1,39 +1,15 @@
+import { Device, Room, AirConditionerDevice } from './../models/models';
 import { Decode } from './../decode';
 import { IRSlinger } from './irslinger.service';
 import { AirConditionerArgs, AirConditioner } from './../airconditioner';
 import { sync as loadJsonFile } from 'load-json-file';
 import { sync as writeJsonFile } from 'write-json-file';
 
-export interface Device
-{
-  id: number;
-  name: string;
-  type: 'air-conditioner';
-  room: string;
-}
-
-export interface AirConditionerDevice
-  extends Device
-{
-  state: 'on' | 'off';
-  mode: 'cool' | 'heat' | 'dry' | 'auto';
-  fanSpeed: 'lowest' | 'low' | 'medium' | 'high' | 'highest' | 'auto';
-  swing: 'lowest' | 'low' | 'medium' | 'high' | 'highest' | 'auto';
-  temperature: 16 | 17 | 18 | 19 | 20 | 21 | 22 | 23 | 24 | 25 | 26 | 27 | 28 | 29 | 30;
-}
-
-export interface Room
-{
-  name: string,
-  devices: Device[],
-}
-
 export class DevicesService
 {
   private static instance: DevicesService = null;
 
   private devices: Device[];
-  // private rooms: Room[];
   private rooms: Room[];
 
   private constructor (
