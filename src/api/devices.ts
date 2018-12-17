@@ -1,5 +1,6 @@
+import { Device } from './../models/models';
 import { AirConditionerArgs } from '../airconditioner';
-import { DevicesService, Device } from '../services/devices.service';
+import { DevicesService } from '../services/devices.service';
 import { Request, Response, Router } from "express";
 import { BaseApiRoute } from "./apiroute";
 
